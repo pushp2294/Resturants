@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pushp.resturants.adapter.CustomRecyclerAdapter
 import com.pushp.resturants.R
 import com.pushp.resturants.viewmodel.RestaurantViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main_res.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var restaurantViewModel: RestaurantViewModel
     private lateinit var context: Context
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     fun fetchData(text: String) {
 
-        restaurantViewModel.getRestaurantsDetails(context, text)?.observe(this, Observer {
+        restaurantViewModel.getRestaurantsDetails(text)?.observe(this, Observer {
             adapter.updateList(it)
         })
     }

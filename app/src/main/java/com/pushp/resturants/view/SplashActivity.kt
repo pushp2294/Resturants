@@ -11,8 +11,10 @@ import com.pushp.resturants.model.MenuData
 import com.pushp.resturants.model.Rstrnts
 import com.pushp.resturants.viewmodel.RestaurantViewModel
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
     private val activityScope = CoroutineScope(Dispatchers.Main)
@@ -29,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
 
         resturantViewModel = ViewModelProvider(this).get(RestaurantViewModel::class.java)
 
-        resturantViewModel.getAllDetails(context)?.observe(this, Observer {
+        resturantViewModel.getAllDetails()?.observe(this, Observer {
             if (it.isEmpty()) {
                 insertJsonData()
             }
@@ -57,10 +59,10 @@ class SplashActivity : AppCompatActivity() {
             }
 
             Gson().fromJson<MenuData>(menuDetails, MenuData::class.java).also {
-                resturantViewModel.insertData(context, it)
+                resturantViewModel.insertData(it)
             }
             Gson().fromJson<Rstrnts>(resturantsDeatils, Rstrnts::class.java).also {
-                resturantViewModel.insertData(context, it)
+                resturantViewModel.insertData(it)
             }
         }
 

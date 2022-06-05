@@ -7,27 +7,33 @@ import androidx.lifecycle.ViewModel
 import com.pushp.resturants.model.MenuData
 import com.pushp.resturants.model.Rstrnts
 import com.pushp.resturants.repository.ResturantRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-
-class RestaurantViewModel : ViewModel() {
+@HiltViewModel
+class RestaurantViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val restaurantRepository: ResturantRepository
+) : ViewModel() {
 
     private var liveDataRestaurants: LiveData<List<String>>? = null
 
-    fun insertData(context: Context, resturants: Rstrnts) {
-        ResturantRepository.insertData(context, resturants)
+    fun insertData(restaurants: Rstrnts) {
+        restaurantRepository.insertData(restaurants)
     }
 
-    fun insertData(context: Context, menus: MenuData) {
-        ResturantRepository.insertData(context, menus)
+    fun insertData(menus: MenuData) {
+        restaurantRepository.insertData(menus)
     }
 
-    fun getRestaurantsDetails(context: Context, text: String): LiveData<List<String>>? {
-        liveDataRestaurants = ResturantRepository.getRestaurantDetails(context, text)
+    fun getRestaurantsDetails(text: String): LiveData<List<String>>? {
+        liveDataRestaurants = restaurantRepository.getRestaurantDetails(text)
         return liveDataRestaurants
     }
 
-    fun getAllDetails(context: Context): LiveData<List<String>>? {
-        liveDataRestaurants = ResturantRepository.checkAllRestaurantDetails(context)
+    fun getAllDetails(): LiveData<List<String>>? {
+        liveDataRestaurants = restaurantRepository.checkAllRestaurantDetails()
         return liveDataRestaurants
     }
 
